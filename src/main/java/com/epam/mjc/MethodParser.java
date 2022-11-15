@@ -47,8 +47,11 @@ public class MethodParser {
         } else {
             if (substringsWithMethodName.size() == 2) {
                 methodSignature = new MethodSignature(substringsWithMethodName.get(1));
+                methodSignature.setReturnType(substringsWithMethodName.get(0));
             } else {
                 methodSignature = new MethodSignature(substringsWithMethodName.get(2));
+                methodSignature.setAccessModifier(substringsWithMethodName.get(0));
+                methodSignature.setReturnType(substringsWithMethodName.get(1));
             }
         }
         return methodSignature;
