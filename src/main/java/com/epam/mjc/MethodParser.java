@@ -25,7 +25,7 @@ public class MethodParser {
      */
     public MethodSignature parseFunction(String signatureString) {
         MethodSignature methodSignature;
-        signatureString = signatureString.replaceAll("\\)", "");
+        signatureString = signatureString.replaceAll("\\)", "").trim();
         List<String> substrings = Arrays.asList(signatureString.split("\\("));
         List<String> substringsWithMethodName = Arrays.asList(substrings.get(0).split(" "));
 
