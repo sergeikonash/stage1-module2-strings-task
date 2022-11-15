@@ -25,11 +25,11 @@ public class MethodParser {
      */
     public MethodSignature parseFunction(String signatureString) {
         MethodSignature methodSignature;
-        signatureString = signatureString.replaceAll("\\)", "");
+        signatureString = signatureString.replace("\\)", "").trim();
         List<String> substrings = Arrays.asList(signatureString.split("\\("));
         List<String> substringsWithMethodName = Arrays.asList(substrings.get(0).split(" "));
 
-        signatureString = substrings.get(1).replaceAll(",", "");
+        signatureString = substrings.get(1).replace(",", "");
         List<String> substringsWithArguments = Arrays.asList(signatureString.split(" "));
         if (substringsWithArguments.size() > 1) {
             List<MethodSignature.Argument> arguments = new ArrayList<>();
@@ -47,8 +47,11 @@ public class MethodParser {
         } else {
             if (substringsWithMethodName.size() == 2) {
                 methodSignature = new MethodSignature(substringsWithMethodName.get(1));
+                methodSignature.setReturnType(substringsWithMethodName.get(0));
             } else {
                 methodSignature = new MethodSignature(substringsWithMethodName.get(2));
+                methodSignature.setAccessModifier(substringsWithMethodName.get(0));
+                methodSignature.setReturnType(substringsWithMethodName.get(1));
             }
         }
         return methodSignature;
