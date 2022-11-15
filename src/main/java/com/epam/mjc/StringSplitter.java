@@ -18,7 +18,6 @@ public class StringSplitter {
             source = source.replace(delimiter, " ");
         }
         source = source.replaceAll("\\s+", " ");
-        List<String> substrings = Arrays.asList(source.split(" "));
-        return substrings;
+        return Arrays.asList(source.split(" "));
     }
 }
