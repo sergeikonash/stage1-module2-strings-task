@@ -17,7 +17,7 @@ public class StringSplitter {
         for (String delimiter : delimiters) {
             source = source.replace(delimiter, " ");
         }
-        source = source.replaceAll("\\s+", " ");
+        source = source.replace("\\s+", " ");
         return Arrays.asList(source.split(" "));
     }
 }
