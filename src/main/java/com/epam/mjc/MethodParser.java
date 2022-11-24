@@ -25,24 +25,35 @@ public class MethodParser {
      */
     public MethodSignature parseFunction(String signatureString) {
         MethodSignature methodSignature;
-        signatureString = signatureString.replaceAll("\\)", "");
+        signatureString = signatureString.replaceAll("\\)", "").trim();
         List<String> substrings = Arrays.asList(signatureString.split("\\("));
         List<String> substringsWithMethodName = Arrays.asList(substrings.get(0).split(" "));
 
-        signatureString = substrings.get(1).replaceAll(",", "");
-        List<String> substringsWithArguments = Arrays.asList(signatureString.split(" "));
-        if (substringsWithArguments.size() > 1) {
-            List<MethodSignature.Argument> arguments = new ArrayList<>();
-            for (int i = 0; i < substringsWithArguments.size(); i = i + 2) {
-                arguments.add(new MethodSignature.Argument(substringsWithArguments.get(i), substringsWithArguments.get(i+1)));
-            }
-            if (substringsWithMethodName.size() == 2) {
-                methodSignature = new MethodSignature(substringsWithMethodName.get(1), arguments);
-                methodSignature.setReturnType(substringsWithMethodName.get(0));
+        if (substrings.size() > 1) {
+            signatureString = substrings.get(1).replaceAll(",", "");
+            List<String> substringsWithArguments = Arrays.asList(signatureString.split(" "));
+            if (substringsWithArguments.size() > 1) {
+                List<MethodSignature.Argument> arguments = new ArrayList<>();
+                for (int i = 0; i < substringsWithArguments.size(); i = i + 2) {
+                    arguments.add(new MethodSignature.Argument(substringsWithArguments.get(i), substringsWithArguments.get(i+1)));
+                }
+                if (substringsWithMethodName.size() == 2) {
+                    methodSignature = new MethodSignature(substringsWithMethodName.get(1), arguments);
+                    methodSignature.setReturnType(substringsWithMethodName.get(0));
+                } else {
+                    methodSignature = new MethodSignature(substringsWithMethodName.get(2), arguments);
+                    methodSignature.setAccessModifier(substringsWithMethodName.get(0));
+                    methodSignature.setReturnType(substringsWithMethodName.get(1));
+                }
             } else {
-                methodSignature = new MethodSignature(substringsWithMethodName.get(2), arguments);
-                methodSignature.setAccessModifier(substringsWithMethodName.get(0));
-                methodSignature.setReturnType(substringsWithMethodName.get(1));
+                if (substringsWithMethodName.size() == 2) {
+                    methodSignature = new MethodSignature(substringsWithMethodName.get(1));
+                    methodSignature.setReturnType(substringsWithMethodName.get(0));
+                } else {
+                    methodSignature = new MethodSignature(substringsWithMethodName.get(2));
+                    methodSignature.setAccessModifier(substringsWithMethodName.get(0));
+                    methodSignature.setReturnType(substringsWithMethodName.get(1));
+                }
             }
         } else {
             if (substringsWithMethodName.size() == 2) {
@@ -54,6 +65,7 @@ public class MethodParser {
                 methodSignature.setReturnType(substringsWithMethodName.get(1));
             }
         }
+
         return methodSignature;
     }
 }
